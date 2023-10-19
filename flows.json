@@ -1,0 +1,102 @@
+[
+    {
+        "id": "16ac08d3965a53f3",
+        "type": "subflow",
+        "name": "FiboLevel",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 160,
+                "y": 200,
+                "wires": [
+                    {
+                        "id": "9d8b1edc24a2e3be"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 660,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "9d8b1edc24a2e3be",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 660,
+                "y": 180,
+                "wires": [
+                    {
+                        "id": "9d8b1edc24a2e3be",
+                        "port": 1
+                    }
+                ]
+            },
+            {
+                "x": 660,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "9d8b1edc24a2e3be",
+                        "port": 2
+                    }
+                ]
+            },
+            {
+                "x": 660,
+                "y": 300,
+                "wires": [
+                    {
+                        "id": "9d8b1edc24a2e3be",
+                        "port": 3
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {
+            "module": "node-red-fibo-level1380",
+            "type": "FiboLevel",
+            "version": "0.0.1",
+            "author": "ebighaffar@gmail.com",
+            "desc": "this is test",
+            "license": "Apache-2.0"
+        },
+        "color": "#DDAA99"
+    },
+    {
+        "id": "9d8b1edc24a2e3be",
+        "type": "function",
+        "z": "16ac08d3965a53f3",
+        "name": "Fibo Level ",
+        "func": "var resultItems = msg.payload.result;\nvar itemsDict = convert(resultItems);\nvar treeItems = getTreeItems(itemsDict);\n\nvar newItems = treeItems.map(item => {\n    return {\n        timeFrame : item.timeFrame,\n        trendType : item.baseLeg.trend.trendType,\n        trendFiboState: item.candleTrendFiboState,\n        correctionFiboState: item.candleCorrectionFiboState\n    };\n});\nnode.warn(newItems);\n\nreturn [newItems];\n\n\n\n/**\n* @param {{ name: string; value: any; }[]} itemsDict\n*/\nfunction getTreeItems(itemsDict){\n    var treeItems = [];\n\n    for (var key of itemsDict) {\n        var item = key.value\n        treeItems.push(item);\n    }\n    return treeItems.sort(function(a,b){\n        return a.timeFrame - b.timeFrame\n    });\n}\n\n/**\n* @param {{ [x: string]: any; }} obj\n*/\nfunction convert(obj) {\n    return Object.keys(obj).map(key => ({\n        name: key,\n        value: obj[key]\n    }));\n}",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [],
+            [],
+            [],
+            []
+        ],
+        "inputLabels": [
+            "Tree"
+        ],
+        "outputLabels": [
+            "Ltf",
+            "Mtf",
+            "Mtf",
+            "Htf"
+        ],
+        "icon": "font-awesome/fa-list-ul"
+    }
+]
